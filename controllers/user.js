@@ -45,12 +45,14 @@ exports.login = async (req,res) => {
         } 
         
         const user = await User.findOne({email:email});
-
-
+        
         if(!user){
             res.status(401).json({message:'user no found'})
         }
-
+        if (user.password !== password){
+            res.status(404).json({message:"increct password please try again"})
+        }
+        
         res.status(200).json({message:'login completed succsessfull'})
     }catch(errr){
         res.status(500).json({message:'internel server error'+errr.message})
