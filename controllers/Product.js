@@ -20,6 +20,27 @@ exports.getAllProduct = async(req,res)=>{
     }
 }
 
+exports.getProdectId = async(req,res) =>{
+ 
+    try{
+        
+        const {id} = req.params;
+
+        const productId = await product.findById(id);
+        
+
+        if(!productId){
+        res.status(401).json({messge:'can not find product on this id'})
+        }
+
+
+         res.status(201).json({messge:'succsessfully find product',productId})
+
+    }catch(error){
+        res.status(401).json({messge:'internel server issue'})
+    }
+
+}
 
 // exports.creatProduct = async(req,res)=>{
 
