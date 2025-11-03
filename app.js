@@ -8,15 +8,16 @@ const port = 3000;
 
 //import router 
 const userRouter = require('./routers/user')
+const productRouter = require('./routers/Product')
 
 
 
-//middilware
 app.use(express.json());
 
 
 //connect roter
 app.use('/user',userRouter);
+app.use('/product',productRouter);
 
 
 
