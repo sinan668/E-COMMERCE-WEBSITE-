@@ -32,3 +32,27 @@ exports.register = async(req,res)=>{
         res.status(500).json({message:"iinternal server error"+errr.message})
     }
 }
+
+exports.login = async (req,res) => {
+    try{
+        const {email,password} = req.body;
+
+        if(!email)  {
+            res.status(401).json({message:'please enter email'})
+        } 
+        if(!password)  {
+            res.status(401).json({message:'password'})
+        } 
+        
+        const user = await User.findOne({email:email});
+
+
+        if(!user){
+            res.status(401).json({message:'user no found'})
+        }
+
+        res.status(200).json({message:'login completed succsessfull'})
+    }catch(errr){
+        res.status(500).json({message:'internel server error'+errr.message})
+    }
+}
