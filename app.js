@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
         res.send("Hello World");
     }
     catch (error) {
-        res.status(500).send("Internal Server Error");
+        res.status(500).send("Internal Server Error",error);
     }
 
 })
