@@ -1,4 +1,5 @@
-const User = require('../models/user')
+const User = require('../models/user');
+const jwt = require('jsonwebtoken')
 
 exports.register = async(req,res)=>{
     try{
@@ -52,6 +53,14 @@ exports.login = async (req,res) => {
         if (user.password !== password){
             res.status(404).json({message:"increct password please try again"})
         }
+
+        const token = jwt.sign(
+            {id:user._id,email:user.email},
+            process.env.JWT_SECRET,
+            {expiresIn:process.env.JWT_EXP}
+        )
+        
+        
         
         res.status(200).json({message:'login completed succsessfull'})
     }catch(errr){
