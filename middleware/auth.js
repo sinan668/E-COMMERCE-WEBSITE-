@@ -3,24 +3,32 @@ const jwt = require ('jsonwebtoken')
 require('dotenv').config();
 
 
-const auth = (req,res,next)=>{
-    try{
-        const authHead = req.headers['authorization']
 
-        if(!authHead){
-            return req.status(400).json({messge:'No token found'})
-        }
 
-        const decoded = jwt.verify(token,process.env.JWT_SECRET || process.env.JWT_EXP)
+exports.auth = (req, res, next) => {
+  try {
+    const authHead = req.headers['authorization'];
 
-        req.user = decoded
-
-        next()
-    }catch(error){
-        req.status(400).json({messge:'inter server error',error:error.messge})
-    
-
+    // Check if header exists
+    if (!authHead) {
+      return res.status(401).json({ message: 'No token provided' });
     }
-}
 
-module.exports = auth;
+    // ✅ Extract the token (Bearer <token>)
+    const token = authHead.split(' ')[1];
+
+    if (!token) {
+      return res.status(401).json({ message: 'Invalid token format' });
+    }
+
+    //  Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Attach decoded data (like userId) to request
+    req.user = decoded;
+
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid or expired token', error: error.message });
+  }
+};
