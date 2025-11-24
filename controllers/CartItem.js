@@ -10,14 +10,18 @@ exports.addCArtItems = async(req,res)=>{
         const {productId,userId,quantity} = req.body;        
         
         
+        
         const products = await Product.findById(productId);
-
+        const users    = await user.findById(userId)
         
         if(!products){
             return res.status(400).json({messege:'product not found'})
         }
+        if(!users){
+            return res.status(400).json({messege:'user not found'})
+        }
 
-        let cart = await cartitems.findOne(({userId}))
+        let cart = await cartitems.findOne({userId:userId})
     
 
         if (!cart){
@@ -26,19 +30,14 @@ exports.addCArtItems = async(req,res)=>{
           const index = cart.items.findIndex((i) => i.productId.equals(productId));
            if (index > -1) cart.items[index].quantity += quantity;
            else cart.items.push({ productId, quantity });
-    }
-        if(!user){ 
-            res.status(400).json({messege:'user not found'})
         }
         
-        
-    
+        await cart.save()
         res.status(200).json({messege:'cart add'})
 
-        
     }catch(error){
         
-        res.status(500).json({messege:'internal server error',error:error.messege})
+        res.status(500).json({messege:'internel server error',error:error.messege})
     }
 }
 

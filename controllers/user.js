@@ -62,7 +62,7 @@ exports.login = async (req,res) => {
         
         
         
-        res.status(200).json({message:'login completed succsessfull'})
+        res.status(200).json({message:'login completed succsessfull',token:token})
     }catch(errr){
         res.status(500).json({message:'internel server error'+errr.message})
     }
