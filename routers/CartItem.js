@@ -7,6 +7,6 @@ const {addCArtItems,getCart} = require('../controllers/CartItem')
 const {auth}                 = require('../middleware/auth')
 
 router.post('/addCArtItems',auth,addCArtItems)
-// router.get('/:id',getCart)
+router.get('/:id',auth,getCart)
 
 module.exports = router
