@@ -82,3 +82,21 @@ exports.getCart = async (req, res) => {
     });
   }
 };
+
+
+exports.deleteCart = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const deletedCart = await cartitems.findOneAndDelete({ userId });
+
+    if (!deletedCart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
+    res.status(200).json({ message: "Cart deleted successfully" });
+    
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
