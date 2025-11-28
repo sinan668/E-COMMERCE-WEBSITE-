@@ -10,8 +10,7 @@ const port = 3000;
 const userRouter = require('./routers/user')
 const productRouter = require('./routers/Product');
 const cartRouter  =  require('./routers/CartItem')
-
-
+const orderRouter = require('./routers/Order')
 
 app.use(express.json());
 
@@ -20,9 +19,7 @@ app.use(express.json());
 app.use('/user',userRouter);
 app.use('/product',productRouter);
 app.use('/cart',cartRouter);
-
-
-
+app.use('/order',orderRouter)
 
 app.get("/", (req, res) => {
     try {
