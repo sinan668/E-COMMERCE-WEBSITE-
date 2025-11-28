@@ -1,6 +1,7 @@
 const cartitems = require('../models/CartItem');
 const Product  = require('../models/Product');
-const user = require('../models/user');
+const user    = require('../models/user')
+const mongoose=require("mongoose");
 
 
 exports.addCArtItems = async(req,res)=>{
@@ -33,7 +34,7 @@ exports.addCArtItems = async(req,res)=>{
         }
         
         await cart.save()
-        res.status(200).json({messege:'cart add'})
+        res.status(200).json({messege:'cart add',cart})
 
     }catch(error){
         
@@ -98,5 +99,36 @@ exports.deleteCart = async (req, res) => {
     
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+
+exports.removeOneProduct = async (req, res) => {
+  try {
+    const { userId, productId } = req.params;
+
+    const updatedCart = await cartitems.findOneAndUpdate(
+      { userId: new mongoose.Types.ObjectId(userId) }, // find user's cart
+      {
+        $pull: { 
+          items: { productId: new mongoose.Types.ObjectId(productId) }  // remove matching product
+        }
+      },
+      { new: true } // return updated document
+    );
+
+    if (!updatedCart) {
+      return res.status(404).json({ message: "Cart or product not found" });
+    }
+
+    res.status(200).json({
+      message: "Product removed from cart successfully",
+      updatedCart,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
   }
 };
