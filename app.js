@@ -11,6 +11,7 @@ const userRouter = require('./routers/user')
 const productRouter = require('./routers/Product');
 const cartRouter  =  require('./routers/CartItem')
 const orderRouter = require('./routers/Order')
+const wishlistRouter = require('./routers/wishlist')
 
 app.use(express.json());
 
@@ -20,6 +21,7 @@ app.use('/user',userRouter);
 app.use('/product',productRouter);
 app.use('/cart',cartRouter);
 app.use('/order',orderRouter)
+app.use('/wishlist',wishlistRouter);
 
 app.get("/", (req, res) => {
     try {
