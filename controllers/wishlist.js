@@ -96,3 +96,29 @@ exports.AllProduct = async (req, res) => {
     return res.status(500).json({message: "Internal server error",error: error.message});
   }
 };
+
+
+exports.deleteProduct = async (req,res) => {
+    try{
+        
+        const {userId,productId}  = req.body
+        
+        
+        const wishlist = await Wishlist.findOneAndUpdate(
+          { userId: userId },           
+          { $pull: { items:{productId: productId } }},
+          { new: true }  
+        )
+        
+        
+        if(!wishlist){
+            return res.status(401).json({messege:'wishlist not found'})
+        }
+
+        res.status(200).json({message:`delete ${productId} this product successfuly`})
+    
+    }catch(error){
+        return res.status(500).json({ message: "Server error", error })
+    }
+
+}
